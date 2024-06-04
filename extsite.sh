@@ -31,7 +31,8 @@ show_info() {
 
 # Função para criar o backup do arquivo HTML e das informações extraídas
 create_backup() {
-    dialog --msgbox "Criando backup dos arquivos..." 5 30
+    dialog --infobox "Criando backup dos arquivos..." 8 40
+    sleep 2
     cp spotify_music_page.html "spotify_$CLEANED_TITLE.html"
     echo -e "Título: $TITLE\nArtista: $ARTIST\nDuração: $DURATION\nÁlbum: $ALBUM\nAno: $YEAR" > "info_$CLEANED_TITLE.txt"
     echo -e "Link do Spotify: $SPOTIFY_LINK" >> "info_$CLEANED_TITLE.txt"
