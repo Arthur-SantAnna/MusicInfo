@@ -1,18 +1,18 @@
 #!/bin/bash
-
-# Função para mostrar a caixa de diálogo e pegar o link da música
+#ARTHUR SANT'ANNA DE CARVALHO SANTOS#
+# Pegando link da música
 get_spotify_link() {
     dialog --inputbox "Digite o link da música do Spotify:" 8 40 2> link.txt
     SPOTIFY_LINK=$(<link.txt)
     rm link.txt
 }
 
-# Função para baixar a página HTML usando o Lynx
+# Baixar a página HTML usando o Lynx
 download_html() {
     lynx -source "$SPOTIFY_LINK" > spotify_music_page.html
 }
 
-# Função para extrair informações do HTML
+# Extrair informações do HTML
 extract_info() {
     TITLE=$(grep -oP '(?<=<meta property="og:title" content=").*?(?=")' spotify_music_page.html)
     ARTIST=$(grep -oP '(?<=<meta name="music:musician_description" content=").*?(?=")' spotify_music_page.html)
@@ -22,14 +22,14 @@ extract_info() {
     CLEANED_TITLE=$(echo $TITLE | sed 's/ /_/g')
 }
 
-# Função para mostrar as informações extraídas
+# Informações extraídas
 show_info() {
     INFO="\n\nTítulo: $TITLE\nArtista: $ARTIST\nDuração: $DURATION\nÁlbum: $ALBUM\nAno: $YEAR"
     dialog --title "INFORMAÇÕES DA MÚSICA ESCOLHIDA" --msgbox "$INFO" 15 50
     --ok-label "Concluir"
 }
 
-# Função para criar o backup do arquivo HTML e das informações extraídas
+# backup do arquivo HTML e das informações extraídas
 create_backup() {
     dialog --infobox "Criando backup dos arquivos..." 8 40
     sleep 2
@@ -48,7 +48,6 @@ create_backup() {
     clear
 }
 
-# Função principal
 main() {
     get_spotify_link
     download_html
@@ -64,5 +63,4 @@ main() {
     fi
 }
 
-# Executa a função principal
 main
