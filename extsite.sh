@@ -2,11 +2,11 @@
 
 # Função para exibir a tela de diálogo e capturar o link do Spotify
 get_spotify_link() {
-    dialog --title "Link da Música no Spotify" --inputbox "Por favor, insira o link da música no Spotify:" 10 60 2>link_musica.txt
+    dialog --title "Link da Música no Spotify" --inputbox "Por favor, insira o link da música no Spotify:" 10 60 2>link.txt
 
     response=$?
     link=$(<link.txt)
-    rm -f link_musica.txt
+    rm -f link.txt
 
     if [ $response -eq 0 ]; then
         echo "$link"
@@ -21,7 +21,7 @@ download_html() {
     local url=$1
     local output_file="spotify_page.html"
 
-    wget -O "$output_file" "$url"
+    lynx -source "$url" > "$output_file"
 
     if [ $? -eq 0 ]; then
         dialog --msgbox "HTML baixado e salvo em $output_file" 6 40
@@ -31,7 +31,7 @@ download_html() {
     fi
 }
 
-#Função principal
+# Função principal
 main() {
     get_spotify_link
     download_html "$link"
@@ -41,6 +41,8 @@ main() {
     else
         dialog --msgbox "Operação concluída." 6 40
     fi
+
+    clear
 }
 
 # Executa a função principal
