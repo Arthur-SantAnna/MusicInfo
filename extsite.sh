@@ -36,12 +36,17 @@ create_backup() {
     cp spotify_music_page.html "spotify_$CLEANED_TITLE.html"
     echo -e "Título: $TITLE\nArtista: $ARTIST\nDuração: $DURATION\nÁlbum: $ALBUM\nAno: $YEAR" > "info_$CLEANED_TITLE.txt"
     echo -e "Link do Spotify: $SPOTIFY_LINK" >> "info_$CLEANED_TITLE.txt"
-    zip -r "backup_$CLEANED_TITLE.zip" "spotify_$CLEANED_TITLE.html" "info_$CLEANED_TITLE.txt"
+
+    mkdir "backup_$CLEANED_TITLE"
+    mv "spotify_$CLEANED_TITLE.html" "info_$CLEANED_TITLE.txt" "backup_$CLEANED_TITLE/"
+
     if [ -d backups ]; then
-        mv "backup_$CLEANED_TITLE.zip" backups/
+        mv "backup_$CLEANED_TITLE" backups/
+        zip -r "backup.zip" "backups"
     else
         mkdir backups
-        mv "backup_$CLEANED_TITLE.zip" backups/
+        mv "backup_$CLEANED_TITLE" backups/
+        zip -r "backup.zip" "backups"
     fi
     rm spotify_music_page.html "info_$CLEANED_TITLE.txt" "spotify_$CLEANED_TITLE.html"
     dialog --msgbox "Backup criado com sucesso!" 5 30 --ok-label "Finalizar"
